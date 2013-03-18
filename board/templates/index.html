@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block menu %}
+<div id="main-navbar" class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <a class="brand" href="/">{{ config['TITLE'] }}</a>  
+
+      <div class="nav-collapse">
+        <ul class="nav">
+        </ul>
+      </div>
+   
+
+    </div> <!-- container -->
+  </div> <!-- navbar-inner -->
+</div> <!-- navbar -->
+{% endblock %}
+
+{% block body %}
+
+<div class="board-body" ng-controller="TaskCtrl">
+  <div class="row-fluid"></div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>To Do</th>
+          <th>In Progress</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width:33.33%">
+            <div id="TodoColumn" class="column">
+
+              {% raw %}
+              <div class="task task-{{ task.priority | lowercase}}" sort-key="T2" ng-repeat="task in tasks | filter:task.status='Not started'| orderBy:orderProp">
+                <div class="btn-group btn-group-vertical pull-right">
+                  <button class="btn btn-mini btn-link"><i class="icon-tasks"></i></button>
+                  <button class="btn btn-mini btn-link" ng-click="editTask(task)"><i class="icon-edit"></i></a>
+                  <button class="btn btn-mini btn-link" ng-click="deleteTask(task)"><i class="icon-remove"></i></button>
+                </div>
+                <h6 class="task-text">{{ task.text }}</h4>
+                <p class="task-info"><span>Project: {{ task.project }} due {{ task.due }}</span><span class="pull-right">({{ task.status }})</span></p>
+              </div>
+              {% endraw %}
+
+            </div> <!-- Todo -->
+          </td>
+
+          <td style="width:33.33%">
+            <div id="InProgressColumn" class="column">
+            {% raw %}
+              <div class="task task-{{ task.priority | lowercase}}" sort-key="T2" ng-repeat="task in tasks | filter:task.status='In progress'| orderBy:orderProp">
+                <div class="btn-group btn-group-vertical pull-right">
+                  <button class="btn btn-mini btn-link"><i class="icon-tasks"></i></button>
+                  <button class="btn btn-mini btn-link" ng-click="editTask(task)" ><i class="icon-edit"></i></button>
+                  <button class="btn btn-mini btn-link" ng-click="deleteTask(task)"><i class="icon-remove"></i></button>
+                </div>
+                <h6 class="task-text">{{ task.text }}</h4>
+                <p class="task-info"><span>Project: {{ task.project }} due {{ task.due }}</span><span class="pull-right">({{ task.status }})</span></p>
+              </div>
+              {% endraw %}
+            </div>
+          </td>
+
+          <td style="width:33.33%">
+            <div id="DoneColumn" class="column"></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div> <!-- row-fuild --> 
+
+  
+  <script type="text/ng-template" id="/details.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="close(task)">&times;</button>
+        <span>Task details</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="control-group">
+          <label class="control-label" for="text">Text</label>
+          <div class="controls">
+            <input class="input-xlarge" type="text" ng-model="task.text"/>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="email">Email</label>
+          <div class="controls">
+            <input type="email" id="email" />
+          </div>
+        </div>  
+
+      </div>
+
+      <div class="modal-footer" style="padding-top: 10px;padding-bottom: 10px;" >
+        <button type="button" ng-click="close(task)" class="btn btn-primary">Save</a>
+        <button type="button" ng-click="close(task)" class="btn">Close</a>
+      </div>
+  </script>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/taskboard-app.js') }}"></script>
+{% endblock %}
+
