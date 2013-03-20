@@ -107,5 +107,19 @@ body {
  padding-right: 4px; 
 }
 
-		
+.modal {
+ margin-left: -315px;
+ width: 650px;
+}		
 
+.input-xxlarge {
+ width: 475px;
+}
+
+.table-boderless td {
+ border: 0;
+}
+
+label {
+ margin-top: 5px;
+}
